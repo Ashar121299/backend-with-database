@@ -31,13 +31,13 @@ const Book = mongs.model('BookModel',BookSchema);
 async function seedData(){
   const firstBook = new Book ({
     title:"anatomy",
-    discription:"medical subjects",
+    discription:"Medical subjects",
     status:"available"
 
   })
   const secondBook = new Book ({
     title:"liguastics",
-    discription:"English langouge subjects",
+    discription:"English language subjects",
     status:"deserved"
 
   })
