@@ -19,6 +19,10 @@ const Mongodb = process.env.Mongo;
 mongs.connect(`${Mongodb}`);
 
 const PORT = process.env.PORT || 3001
+//http://localhost:3001/test
+app.get('/test.', (request, response) => {
+  response.send('test request received')
+})
 
 const BookSchema = new mongs.Schema({
   title: String,
@@ -53,10 +57,7 @@ async function seedData () {
 
 
 
-//http://localhost:3001/test
-app.get('/test', (request, response) => {
-  response.send('test request received')
-})
+
 
 //http://localhost:3001/book
 app.get('/book', getbookHandler)
