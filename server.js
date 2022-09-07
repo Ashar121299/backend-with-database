@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json())
 const { response } = require('express');
 
-const M = process.env.Mongo;
+const M = `mongodb://books:Ashar121299@ac-ogxaou4-shard-00-00.vnq50b2.mongodb.net:27017,ac-ogxaou4-shard-00-01.vnq50b2.mongodb.net:27017,ac-ogxaou4-shard-00-02.vnq50b2.mongodb.net:27017/?ssl=true&replicaSet=atlas-103vtc-shard-0&authSource=admin&retryWrites=true&w=majority`;
 
 //mongs.connect('mongodb://localhost:27017/book')
 
@@ -117,6 +117,5 @@ app.delete('/book/:id',deleteHandler);
   })
   
 }
-
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`))
