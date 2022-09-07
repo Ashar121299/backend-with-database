@@ -11,12 +11,12 @@ const { response } = require('express');
 
 
 
-//const Mongodb = process.env.Mongo;
+const Mongodb = process.env.Mongo;
 
 
-mongs.connect('mongodb://localhost:27017/book')
+//mongs.connect('mongodb://localhost:27017/book')
 
-//mongs.connect(`${Mongodb}`, {useNewUrlParser: true, useUnifiedTopology: true});
+mongs.connect(`${Mongodb}`);
 
 const PORT = process.env.PORT || 3001
 
