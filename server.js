@@ -9,11 +9,11 @@ app.use(cors());
 app.use(express.json())
 const { response } = require('express');
 
-//const M = process.env.Mongo;
+const M = process.env.Mongo;
 
-mongs.connect('mongodb://localhost:27017/book')
+//mongs.connect('mongodb://localhost:27017/book')
 
-//mongs.connect(`${M}`);
+mongs.connect(`${M}`);
 
 const PORT = process.env.PORT || 3001
 
