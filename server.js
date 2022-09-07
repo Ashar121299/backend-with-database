@@ -11,14 +11,19 @@ const { response } = require('express');
 
 
 
-//const Mongodb = process.env.Mongo;
 
+//const M = process.env.Mongo;
 
 mongs.connect('mongodb://localhost:27017/book')
 
-//mongs.connect(`${Mongodb}`, {useNewUrlParser: true, useUnifiedTopology: true});
+//mongs.connect(`${M}`);
 
 const PORT = process.env.PORT || 3001
+
+//http://localhost:3001/test
+app.get('/test.', (request, response) => {
+  response.send('test request received')
+})
 
 const BookSchema = new mongs.Schema({
   title: String,
@@ -53,10 +58,7 @@ async function seedData () {
 
 
 
-//http://localhost:3001/test
-app.get('/test', (request, response) => {
-  response.send('test request received')
-})
+
 
 //http://localhost:3001/book
 app.get('/book', getbookHandler)
@@ -72,16 +74,18 @@ function getbookHandler (req, res) {
   )
 }
 
+
 app.post('/book', addHandler);
 
 async function addHandler(req,res) {
   console.log(req.body);
   
-  const {title,discription,status} = req.body; 
+  const {title,discription,status} = req.body; //Destructuring assignment
   await Book.create({
-      title:title,
-      discription:discription,
-      status:status
+    title:title,
+    discription:discription,
+    status:status,
+      
   });
 
   Book.find({},(err,result)=>{
@@ -91,34 +95,35 @@ async function addHandler(req,res) {
       }
       else
       {
-          
+          // console.log(result);
           res.send(result);
       }
   })
 }
+
+
 app.delete('/book/:id',deleteHandler);
  
-function deleteHandler(req,res) { 
-  const bookId = req.params.id; 
+  function deleteHandler(req,res) { 
+  const bookId = req.params.id;
+ 
   Book.deleteOne({_id:bookId},(err,result)=>{
       
-      Book.find({},(err,result)=>{ 
+      Book.find({_id:bookId},(err,result)=>{ 
           if(err)
           {
-              console.log(err);
+            console.log(err);
           }
           else
           {
              
-              res.send(result);
+            res.send(result);
           }
       })
 
   })
   
 }
-
-
 
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`))
