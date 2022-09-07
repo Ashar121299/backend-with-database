@@ -11,11 +11,11 @@ const { response } = require('express');
 
 //const M = process.env.Mongo;
 
-mongs.connect('mongodb://localhost:27017/book')
+//mongs.connect('mongodb://localhost:27017/book')
 
-//mongs.connect(`${M}`);
+mongs.connect(`${M}`);
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT;
 
 //http://localhost:3001/test
 app.get('/test.', (request, response) => {
