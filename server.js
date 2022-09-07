@@ -1,15 +1,23 @@
-'use strict'
+'use strict';
 
-require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
-const mongs = require('mongoose')
-const app = express()
-app.use(cors())
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mongs = require('mongoose');
+const app = express();
+app.use(cors());
 app.use(express.json())
-app.use(express.json())
+const { response } = require('express');
 
-mongs.connect('mongodb://localhost:27017/book')
+
+
+const Mongodb = process.env.Mongo;
+
+
+//mongs.connect('mongodb://localhost:27017/book')
+
+mongs.connect(`${Mongodb}`, {useNewUrlParser: true, useUnifiedTopology: true});
+
 const PORT = process.env.PORT || 3001
 
 const BookSchema = new mongs.Schema({
@@ -63,6 +71,53 @@ function getbookHandler (req, res) {
   }
   )
 }
+
+app.post('/book', addHandler);
+
+async function addHandler(req,res) {
+  console.log(req.body);
+  
+  const {title,discription,status} = req.body; 
+  await Book.create({
+      title:title,
+      discription:discription,
+      status:status
+  });
+
+  Book.find({},(err,result)=>{
+      if(err)
+      {
+          console.log(err);
+      }
+      else
+      {
+          
+          res.send(result);
+      }
+  })
+}
+app.delete('/book/:id',deleteHandler);
+ 
+function deleteHandler(req,res) { 
+  const bookId = req.params.id; 
+  Book.deleteOne({_id:bookId},(err,result)=>{
+      
+      Book.find({},(err,result)=>{ 
+          if(err)
+          {
+              console.log(err);
+          }
+          else
+          {
+             
+              res.send(result);
+          }
+      })
+
+  })
+  
+}
+
 
 
 
