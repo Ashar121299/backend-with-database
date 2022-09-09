@@ -118,5 +118,31 @@ app.delete('/book/:id',deleteHandler);
   
 }
 
+app.put('/book/:id',updateHandler);
+
+function updateHandler(req, res){
+  const id = req.params.id;
+  const {title,discription,status} = req.body;
+
+  Book.findByIdAndUpdate(id, {title,discription,status}, (err, result) => {
+    if(err){
+      console.log(err);
+    } else {
+      Book.find({},(err,result)=>{ 
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            res.send(result);
+        }
+    })
+    }
+  })
+
+}
+
+
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`))
