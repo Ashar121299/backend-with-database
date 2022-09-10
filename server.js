@@ -77,7 +77,7 @@ function getbookHandler (req, res) {
 app.post('/book', addHandler);
 
 async function addHandler(req,res) {
-  console.log(req.body);
+  //console.log(req.body);
   
   const {title,discription,status,name} = req.body; //Destructuring assignment
   await Book.create({
