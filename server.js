@@ -25,7 +25,8 @@ app.get('/test.', (request, response) => {
 const BookSchema = new mongs.Schema({
   title: String,
   discription: String,
-  status: String
+  status: String,
+  name: String
 })
 
 const Book = mongs.model('BookModel', BookSchema)
@@ -34,17 +35,20 @@ async function seedData () {
   const firstBook = new Book({
     title: 'anatomy',
     discription: 'Medical subjects',
-    status: 'available'
+    status: 'available',
+    name: "Admin",
   })
   const secondBook = new Book({
     title: 'liguastics',
     discription: 'English language subjects',
-    status: 'deserved'
+    status: 'deserved',
+    name: "Admin",
   })
   const thirdBook = new Book({
     title: 'special subject in computer engineer',
     discription: 'computer language subjects',
-    status: 'not exist'
+    status: 'not exist',
+    name: "Admin",
   })
   await firstBook.save()
   await secondBook.save()
@@ -55,8 +59,10 @@ async function seedData () {
 
 //http://localhost:3001/book
 app.get('/book', getbookHandler)
+
 function getbookHandler (req, res) {
-  Book.find( {}, (err, result) => {
+  const name = req.query.name;
+  Book.find( {name:name}, (err, result) => {
     if (err) {
       console.log(err)
     } 
@@ -71,17 +77,18 @@ function getbookHandler (req, res) {
 app.post('/book', addHandler);
 
 async function addHandler(req,res) {
-  console.log(req.body);
+  //console.log(req.body);
   
-  const {title,discription,status} = req.body; //Destructuring assignment
+  const {title,discription,status,name} = req.body; //Destructuring assignment
   await Book.create({
     title:title,
     discription:discription,
     status:status,
+    name:name,
       
   });
 
-  Book.find({},(err,result)=>{
+  Book.find({name:name},(err,result)=>{
       if(err)
       {
           console.log(err);
@@ -99,10 +106,11 @@ app.delete('/book/:id',deleteHandler);
  
   function deleteHandler(req,res) { 
   const bookId = req.params.id;
+  const name = req.query.name;
  
   Book.deleteOne({_id:bookId},(err,result)=>{
       
-      Book.find({_id:bookId},(err,result)=>{ 
+      Book.find({name:name},(err,result)=>{ 
           if(err)
           {
             console.log(err);
@@ -122,13 +130,13 @@ app.put('/book/:id',updateHandler);
 
 function updateHandler(req, res){
   const id = req.params.id;
-  const {title,discription,status} = req.body;
+  const {title,discription,status,name} = req.body;
 
-  Book.findByIdAndUpdate(id, {title,discription,status}, (err, result) => {
+  Book.findByIdAndUpdate(id, {title,discription,status,name}, (err, result) => {
     if(err){
       console.log(err);
     } else {
-      Book.find({},(err,result)=>{ 
+      Book.find({name:name},(err,result)=>{ 
         if(err)
         {
             console.log(err);
